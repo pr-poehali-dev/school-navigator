@@ -5,55 +5,75 @@ type Room = {
   id: string;
   label: string;
   name: string;
-  floor: number;
   x: number;
   y: number;
   w: number;
   h: number;
-  type: 'room' | 'hub';
+  type: 'room' | 'corridor' | 'stair' | 'service';
 };
 
-const GRID = { cols: 20, rows: 12, cell: 34 };
+const CELL = 36;
+const W = 22;
+const H = 13;
 
 const rooms: Room[] = [
-  { id: 'in', label: '🚪', name: 'Главный вход', floor: 1, x: 9, y: 11, w: 2, h: 1, type: 'hub' },
-  { id: 'hall1', label: 'Холл', name: 'Холл 1 этаж', floor: 1, x: 4, y: 7, w: 12, h: 2, type: 'hub' },
-  { id: '101', label: '101', name: 'Гардероб', floor: 1, x: 2, y: 9, w: 3, h: 2, type: 'room' },
-  { id: '102', label: '102', name: 'Столовая', floor: 1, x: 6, y: 9, w: 4, h: 2, type: 'room' },
-  { id: '108', label: '108', name: 'Русский язык · Орлова М.Д.', floor: 1, x: 11, y: 9, w: 3, h: 2, type: 'room' },
-  { id: '112', label: '112', name: 'История · Соколов В.О.', floor: 1, x: 15, y: 9, w: 3, h: 2, type: 'room' },
-  { id: '201', label: '201', name: 'Библиотека', floor: 1, x: 2, y: 4, w: 3, h: 2, type: 'room' },
-  { id: '204', label: '204', name: 'Математика · Котова А.С.', floor: 1, x: 6, y: 4, w: 3, h: 2, type: 'room' },
-  { id: '215', label: '215', name: 'Физика · Лебедев И.П.', floor: 1, x: 11, y: 4, w: 3, h: 2, type: 'room' },
-  { id: '301', label: '301', name: 'Биология · Зайцева Е.Ю.', floor: 1, x: 15, y: 4, w: 3, h: 2, type: 'room' },
-  { id: '305', label: '305', name: 'Информатика · Громов П.А.', floor: 1, x: 2, y: 1, w: 4, h: 2, type: 'room' },
-  { id: 'gym', label: 'Зал', name: 'Спортивный зал', floor: 1, x: 13, y: 1, w: 5, h: 2, type: 'room' },
+  // ── Коридор / холл
+  { id: 'corr', label: '', name: 'Коридор', x: 3, y: 5, w: 16, h: 2, type: 'corridor' },
+
+  // ── Вход
+  { id: 'in', label: '🚪', name: 'Главный вход', x: 10, y: 11, w: 2, h: 2, type: 'stair' },
+
+  // ── Лестница
+  { id: 'stair', label: '⬆', name: 'Лестница', x: 19, y: 5, w: 2, h: 2, type: 'stair' },
+
+  // ── 1-й этаж (нижние)
+  { id: '101', label: '101', name: 'Гардероб', x: 1, y: 8, w: 3, h: 2, type: 'room' },
+  { id: '102', label: '102', name: 'Столовая', x: 5, y: 8, w: 4, h: 2, type: 'room' },
+  { id: '108', label: '108', name: 'Русский язык · Козлова Н.П.', x: 10, y: 8, w: 3, h: 2, type: 'room' },
+  { id: '112', label: '112', name: 'Математика · Смирнова И.В.', x: 14, y: 8, w: 4, h: 2, type: 'room' },
+
+  // ── 1-й этаж (верхние)
+  { id: '103', label: '103', name: 'Библиотека', x: 1, y: 2, w: 3, h: 2, type: 'room' },
+  { id: '105', label: '105', name: 'Медпункт', x: 5, y: 2, w: 3, h: 2, type: 'room' },
+  { id: '106', label: '106', name: 'Актовый зал', x: 9, y: 2, w: 4, h: 2, type: 'room' },
+  { id: '109', label: '109', name: 'Начальные классы', x: 14, y: 2, w: 4, h: 2, type: 'room' },
+
+  // ── 2-й этаж (условно — верхняя строка)
+  { id: '206', label: '206', name: 'Английский язык · Орлова Т.Н.', x: 1, y: 0, w: 3, h: 1, type: 'room' },
+  { id: '210', label: '210', name: 'История · Новиков А.С.', x: 5, y: 0, w: 3, h: 1, type: 'room' },
+  { id: '214', label: '214', name: 'Физика · Фёдоров Д.А.', x: 9, y: 0, w: 4, h: 1, type: 'room' },
+  { id: '302', label: '302', name: 'Информатика · Волков А.И.', x: 14, y: 0, w: 3, h: 1, type: 'room' },
+  { id: '316', label: '316', name: 'Биология · Морозова С.Ю.', x: 18, y: 0, w: 3, h: 1, type: 'room' },
 ];
 
-const center = (r: Room) => ({ cx: (r.x + r.w / 2) * GRID.cell, cy: (r.y + r.h / 2) * GRID.cell });
+const center = (r: Room) => ({
+  cx: (r.x + r.w / 2) * CELL,
+  cy: (r.y + r.h / 2) * CELL,
+});
+
+const corridorRoom = rooms.find((r) => r.id === 'corr')!;
 
 const SchoolMap = () => {
   const [from, setFrom] = useState('in');
-  const [to, setTo] = useState('215');
+  const [to, setTo] = useState('112');
 
   const fromRoom = rooms.find((r) => r.id === from)!;
   const toRoom = rooms.find((r) => r.id === to)!;
-  const hub = rooms.find((r) => r.id === 'hall1')!;
 
   const path = useMemo(() => {
     const a = center(fromRoom);
-    const h = center(hub);
+    const h = center(corridorRoom);
     const b = center(toRoom);
     return `M ${a.cx} ${a.cy} L ${a.cx} ${h.cy} L ${b.cx} ${h.cy} L ${b.cx} ${b.cy}`;
-  }, [fromRoom, toRoom, hub]);
+  }, [fromRoom, toRoom]);
 
   const dist = useMemo(() => {
     const a = center(fromRoom);
-    const h = center(hub);
+    const h = center(corridorRoom);
     const b = center(toRoom);
     const len = Math.abs(a.cy - h.cy) + Math.abs(a.cx - b.cx) + Math.abs(h.cy - b.cy);
-    return Math.round(len / GRID.cell * 1.2);
-  }, [fromRoom, toRoom, hub]);
+    return Math.round((len / CELL) * 1.4);
+  }, [fromRoom, toRoom]);
 
   const selectable = rooms.filter((r) => r.type === 'room' || r.id === 'in');
 
@@ -62,7 +82,7 @@ const SchoolMap = () => {
       {/* Route panel */}
       <div className="flex flex-col gap-3 border-b border-border p-5 sm:flex-row sm:items-center">
         <div className="flex flex-1 items-center gap-2 rounded-2xl bg-secondary px-4 py-2.5">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">А</span>
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">А</span>
           <select
             value={from}
             onChange={(e) => setFrom(e.target.value)}
@@ -75,7 +95,7 @@ const SchoolMap = () => {
         </div>
         <Icon name="ArrowRight" size={18} className="hidden shrink-0 text-muted-foreground sm:block" />
         <div className="flex flex-1 items-center gap-2 rounded-2xl bg-secondary px-4 py-2.5">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">Б</span>
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-accent-foreground">Б</span>
           <select
             value={to}
             onChange={(e) => setTo(e.target.value)}
@@ -89,46 +109,72 @@ const SchoolMap = () => {
       </div>
 
       {/* Map */}
-      <div className="relative bg-[hsl(40,30%,96%)] p-4">
+      <div className="overflow-x-auto bg-[hsl(40,30%,96%)] p-4">
         <svg
-          viewBox={`0 0 ${GRID.cols * GRID.cell} ${GRID.rows * GRID.cell}`}
-          className="w-full"
-          style={{ maxHeight: 420 }}
+          viewBox={`0 0 ${W * CELL} ${H * CELL}`}
+          className="w-full min-w-[520px]"
+          style={{ maxHeight: 440 }}
         >
           <defs>
-            <pattern id="grid" width={GRID.cell} height={GRID.cell} patternUnits="userSpaceOnUse">
-              <path d={`M ${GRID.cell} 0 L 0 0 0 ${GRID.cell}`} fill="none" stroke="hsl(30,15%,88%)" strokeWidth="1" />
+            <pattern id="grid1234" width={CELL} height={CELL} patternUnits="userSpaceOnUse">
+              <path d={`M ${CELL} 0 L 0 0 0 ${CELL}`} fill="none" stroke="hsl(30,15%,87%)" strokeWidth="0.8" />
             </pattern>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="hsl(16,90%,56%)" />
+            </marker>
           </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
+          <rect width="100%" height="100%" fill="url(#grid1234)" />
 
-          {/* corridor highlight */}
-          <rect
-            x={hub.x * GRID.cell} y={hub.y * GRID.cell}
-            width={hub.w * GRID.cell} height={hub.h * GRID.cell}
-            rx="10" fill="hsl(40,20%,90%)"
-          />
+          {/* Floor label */}
+          <text x="8" y="20" fontSize="9" fill="hsl(25,8%,55%)" fontWeight="600" letterSpacing="1">1 ЭТАЖ</text>
+          <text x="8" y={1 * CELL - 6} fontSize="9" fill="hsl(25,8%,55%)" fontWeight="600" letterSpacing="1">2–3 ЭТАЖ</text>
 
-          {/* rooms */}
+          {/* Rooms */}
           {rooms.map((r) => {
+            if (r.type === 'corridor') {
+              return (
+                <rect key={r.id}
+                  x={r.x * CELL} y={r.y * CELL}
+                  width={r.w * CELL} height={r.h * CELL}
+                  rx="8" fill="hsl(40,20%,90%)"
+                />
+              );
+            }
+
             const isFrom = r.id === from;
             const isTo = r.id === to;
-            const active = isFrom || isTo;
+            const highlighted = isFrom || isTo;
+
+            const fill = isTo
+              ? 'hsl(16,90%,56%)'
+              : isFrom
+              ? 'hsl(20,14%,8%)'
+              : r.type === 'stair'
+              ? 'hsl(40,20%,88%)'
+              : 'white';
+
+            const textFill = highlighted ? 'white' : r.type === 'stair' ? 'hsl(20,14%,40%)' : 'hsl(20,14%,20%)';
+
             return (
-              <g key={r.id} onClick={() => setTo(r.id)} className="cursor-pointer">
+              <g
+                key={r.id}
+                onClick={() => r.type === 'room' && setTo(r.id)}
+                className={r.type === 'room' ? 'cursor-pointer' : ''}
+              >
                 <rect
-                  x={r.x * GRID.cell + 3} y={r.y * GRID.cell + 3}
-                  width={r.w * GRID.cell - 6} height={r.h * GRID.cell - 6}
-                  rx="9"
-                  fill={isTo ? 'hsl(16,90%,56%)' : isFrom ? 'hsl(20,14%,8%)' : 'white'}
-                  stroke={active ? 'transparent' : 'hsl(30,15%,85%)'}
+                  x={r.x * CELL + 3} y={r.y * CELL + 3}
+                  width={r.w * CELL - 6} height={r.h * CELL - 6}
+                  rx="8"
+                  fill={fill}
+                  stroke={highlighted ? 'transparent' : 'hsl(30,15%,84%)'}
                   strokeWidth="1.5"
                 />
                 <text
                   x={center(r).cx} y={center(r).cy + 4}
                   textAnchor="middle"
-                  fontSize="13" fontWeight="600"
-                  fill={active ? 'white' : 'hsl(20,14%,20%)'}
+                  fontSize={r.h < 1.5 ? '10' : '12'}
+                  fontWeight="600"
+                  fill={textFill}
                 >
                   {r.label}
                 </text>
@@ -136,25 +182,42 @@ const SchoolMap = () => {
             );
           })}
 
-          {/* route */}
-          <path d={path} fill="none" stroke="hsl(16,90%,56%)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="1 11" opacity="0.45" />
-          <path d={path} fill="none" stroke="hsl(16,90%,56%)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+          {/* Route shadow */}
+          <path
+            d={path} fill="none"
+            stroke="hsl(16,90%,56%)" strokeWidth="6"
+            strokeLinecap="round" strokeLinejoin="round"
+            opacity="0.18"
+          />
+          {/* Route */}
+          <path
+            d={path} fill="none"
+            stroke="hsl(16,90%,56%)" strokeWidth="4"
+            strokeLinecap="round" strokeLinejoin="round"
+            markerEnd="url(#arrow)"
+          />
 
-          {/* markers */}
-          <circle cx={center(fromRoom).cx} cy={center(fromRoom).cy} r="8" fill="white" stroke="hsl(20,14%,8%)" strokeWidth="4" />
-          <circle cx={center(toRoom).cx} cy={center(toRoom).cy} r="8" fill="white" stroke="hsl(16,90%,56%)" strokeWidth="4" />
+          {/* Start marker */}
+          <circle cx={center(fromRoom).cx} cy={center(fromRoom).cy} r="9" fill="white" stroke="hsl(20,14%,8%)" strokeWidth="3.5" />
+          <circle cx={center(fromRoom).cx} cy={center(fromRoom).cy} r="3.5" fill="hsl(20,14%,8%)" />
+          {/* End marker */}
+          <circle cx={center(toRoom).cx} cy={center(toRoom).cy} r="9" fill="white" stroke="hsl(16,90%,56%)" strokeWidth="3.5" />
+          <circle cx={center(toRoom).cx} cy={center(toRoom).cy} r="3.5" fill="hsl(16,90%,56%)" />
         </svg>
       </div>
 
-      {/* Footer info */}
-      <div className="flex items-center justify-between gap-4 border-t border-border p-5">
-        <div className="flex items-center gap-2 text-sm">
+      {/* Info */}
+      <div className="flex items-center justify-between gap-4 border-t border-border px-5 py-4">
+        <div className="flex items-center gap-3 text-sm">
           <Icon name="Footprints" size={18} className="text-accent" />
-          <span className="font-medium">~{dist} шагов</span>
+          <span className="font-semibold">~{dist} шагов</span>
           <span className="text-muted-foreground">·</span>
-          <span className="text-muted-foreground">{Math.max(1, Math.round(dist / 80))} мин</span>
+          <span className="text-muted-foreground">{Math.max(1, Math.round(dist / 80))} мин пешком</span>
         </div>
-        <p className="hidden text-sm text-muted-foreground sm:block">Нажмите на кабинет, чтобы построить маршрут</p>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <Icon name="MousePointer" size={13} />
+          <span className="hidden sm:inline">Нажмите на кабинет</span>
+        </div>
       </div>
     </div>
   );

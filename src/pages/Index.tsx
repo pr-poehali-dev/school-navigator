@@ -7,19 +7,24 @@ type SchoolClass = { id: number; name: string; teacher: string; room: string; st
 type Lesson = { num: number; start: string; end: string };
 
 const teachers: Teacher[] = [
-  { id: 1, name: 'Анна Сергеевна Котова', subject: 'Математика', room: 'Корпус А', cabinet: '204' },
-  { id: 2, name: 'Игорь Павлович Лебедев', subject: 'Физика', room: 'Корпус А', cabinet: '215' },
-  { id: 3, name: 'Мария Дмитриевна Орлова', subject: 'Русский язык', room: 'Корпус Б', cabinet: '108' },
-  { id: 4, name: 'Виктор Олегович Соколов', subject: 'История', room: 'Корпус Б', cabinet: '112' },
-  { id: 5, name: 'Елена Юрьевна Зайцева', subject: 'Биология', room: 'Корпус В', cabinet: '301' },
-  { id: 6, name: 'Павел Андреевич Громов', subject: 'Информатика', room: 'Корпус В', cabinet: '305' },
+  { id: 1, name: 'Ирина Владимировна Смирнова', subject: 'Математика', room: '1 этаж', cabinet: '112' },
+  { id: 2, name: 'Дмитрий Алексеевич Фёдоров', subject: 'Физика', room: '2 этаж', cabinet: '214' },
+  { id: 3, name: 'Наталья Петровна Козлова', subject: 'Русский язык и литература', room: '1 этаж', cabinet: '108' },
+  { id: 4, name: 'Андрей Сергеевич Новиков', subject: 'История и обществознание', room: '2 этаж', cabinet: '210' },
+  { id: 5, name: 'Светлана Юрьевна Морозова', subject: 'Биология и химия', room: '3 этаж', cabinet: '316' },
+  { id: 6, name: 'Алексей Игоревич Волков', subject: 'Информатика', room: '3 этаж', cabinet: '302' },
+  { id: 7, name: 'Татьяна Николаевна Орлова', subject: 'Английский язык', room: '2 этаж', cabinet: '206' },
+  { id: 8, name: 'Павел Михайлович Захаров', subject: 'Физическая культура', room: 'Цоколь', cabinet: 'Спортзал' },
 ];
 
 const classes: SchoolClass[] = [
-  { id: 1, name: '5 «А»', teacher: 'Котова А.С.', room: 'Корпус А', students: 28 },
-  { id: 2, name: '7 «Б»', teacher: 'Орлова М.Д.', room: 'Корпус Б', students: 25 },
-  { id: 3, name: '9 «А»', teacher: 'Лебедев И.П.', room: 'Корпус А', students: 30 },
-  { id: 4, name: '11 «В»', teacher: 'Громов П.А.', room: 'Корпус В', students: 22 },
+  { id: 1, name: '5 «А»', teacher: 'Козлова Н.П.', room: '1 этаж', students: 27 },
+  { id: 2, name: '6 «Б»', teacher: 'Новиков А.С.', room: '1 этаж', students: 25 },
+  { id: 3, name: '7 «А»', teacher: 'Смирнова И.В.', room: '2 этаж', students: 29 },
+  { id: 4, name: '8 «В»', teacher: 'Орлова Т.Н.', room: '2 этаж', students: 26 },
+  { id: 5, name: '9 «А»', teacher: 'Фёдоров Д.А.', room: '2 этаж', students: 28 },
+  { id: 6, name: '10 «Б»', teacher: 'Морозова С.Ю.', room: '3 этаж', students: 24 },
+  { id: 7, name: '11 «А»', teacher: 'Волков А.И.', room: '3 этаж', students: 22 },
 ];
 
 const bells: Lesson[] = [
@@ -27,16 +32,18 @@ const bells: Lesson[] = [
   { num: 2, start: '09:25', end: '10:10' },
   { num: 3, start: '10:30', end: '11:15' },
   { num: 4, start: '11:35', end: '12:20' },
-  { num: 5, start: '12:30', end: '13:15' },
-  { num: 6, start: '13:25', end: '14:10' },
+  { num: 5, start: '13:00', end: '13:45' },
+  { num: 6, start: '13:55', end: '14:40' },
+  { num: 7, start: '14:50', end: '15:35' },
 ];
 
 const schedule = [
-  { time: '08:30', subject: 'Математика', teacher: 'Котова А.С.', cabinet: '204' },
-  { time: '09:25', subject: 'Физика', teacher: 'Лебедев И.П.', cabinet: '215' },
-  { time: '10:30', subject: 'Русский язык', teacher: 'Орлова М.Д.', cabinet: '108' },
-  { time: '11:35', subject: 'История', teacher: 'Соколов В.О.', cabinet: '112' },
-  { time: '12:30', subject: 'Информатика', teacher: 'Громов П.А.', cabinet: '305' },
+  { time: '08:30', subject: 'Математика', teacher: 'Смирнова И.В.', cabinet: '112' },
+  { time: '09:25', subject: 'Русский язык', teacher: 'Козлова Н.П.', cabinet: '108' },
+  { time: '10:30', subject: 'История', teacher: 'Новиков А.С.', cabinet: '210' },
+  { time: '11:35', subject: 'Английский язык', teacher: 'Орлова Т.Н.', cabinet: '206' },
+  { time: '13:00', subject: 'Физика', teacher: 'Фёдоров Д.А.', cabinet: '214' },
+  { time: '13:55', subject: 'Информатика', teacher: 'Волков А.И.', cabinet: '302' },
 ];
 
 const tabs = [
@@ -76,17 +83,17 @@ const Index = () => {
           </div>
           <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm text-muted-foreground md:flex">
             <span className="h-2 w-2 rounded-full bg-accent" />
-            Гимназия №7
+            Школа №1234
           </div>
         </header>
 
         <section className="mt-14 md:mt-20 animate-fade-up" style={{ animationDelay: '80ms' }}>
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent">Школьный навигатор</p>
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent">Школа №1234 · Москва</p>
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
             Найди всё <br className="hidden md:block" />за пару секунд
           </h1>
           <p className="mt-5 max-w-md text-base text-muted-foreground md:text-lg">
-            Учителя, классы, аудитории и расписание звонков — в одном чистом интерфейсе.
+            Большая Молчановка, 26–28 · Учителя, классы, аудитории и расписание звонков.
           </p>
 
           <div className="relative mt-8 max-w-xl">
@@ -202,7 +209,7 @@ const Index = () => {
         )}
 
         <footer className="mt-20 border-t border-border pt-8 text-sm text-muted-foreground">
-          Школьный навигатор · Гимназия №7
+          Школа №1234 · Большая Молчановка, 26–28 · Москва
         </footer>
       </div>
     </div>
