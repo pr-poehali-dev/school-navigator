@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-import SchoolMap from '@/components/SchoolMap';
+import SchoolMap3D from '@/components/SchoolMap3D';
 
 const AUTH_URL = 'https://functions.poehali.dev/346845e7-0469-4886-96ca-992b772abdb5';
 const SCHEDULE_URL = 'https://functions.poehali.dev/26b93fab-0c7a-4166-b79b-adaf120d3844';
@@ -366,7 +366,7 @@ const Index = () => {
                 </div>
               )}
 
-              {active === 'map' && <SchoolMap />}
+              {active === 'map' && <SchoolMap3D />}
 
               {active === 'teachers' && (
                 <div className="grid gap-3 sm:grid-cols-2">
