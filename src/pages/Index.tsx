@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import Icon from '@/components/ui/icon';
+import SchoolMap from '@/components/SchoolMap';
 
 type Teacher = { id: number; name: string; subject: string; room: string; cabinet: string };
 type SchoolClass = { id: number; name: string; teacher: string; room: string; students: number };
@@ -39,6 +40,7 @@ const schedule = [
 ];
 
 const tabs = [
+  { id: 'map', label: 'Маршрут', icon: 'Map' },
   { id: 'schedule', label: 'Расписание', icon: 'CalendarDays' },
   { id: 'teachers', label: 'Учителя', icon: 'GraduationCap' },
   { id: 'classes', label: 'Классы', icon: 'Users' },
@@ -47,7 +49,7 @@ const tabs = [
 
 const Index = () => {
   const [query, setQuery] = useState('');
-  const [active, setActive] = useState('schedule');
+  const [active, setActive] = useState('map');
 
   const q = query.trim().toLowerCase();
 
@@ -146,6 +148,8 @@ const Index = () => {
             </nav>
 
             <section className="mt-8 animate-fade-up" style={{ animationDelay: '240ms' }}>
+              {active === 'map' && <SchoolMap />}
+
               {active === 'schedule' && (
                 <div className="overflow-hidden rounded-3xl border border-border bg-card">
                   {schedule.map((l, i) => (
