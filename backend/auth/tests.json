@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "POST register user",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Иван Петров", "class_name": "7 «А»"},
+      "expectedStatus": 200,
+      "expectedBody": {"session_id": "string"},
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "GET profile no session",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 401
+    }
+  ]
+}
